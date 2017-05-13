@@ -1,3 +1,3 @@
-# Learning Flask
+# Flask Wiki Map
 
-Building a Location Based App that shows people place of interest near a specified location and info about the places.
+See places of interest near a location you choose and info about about the places.
