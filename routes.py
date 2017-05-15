@@ -2,7 +2,7 @@
 
 from models import db
 from forms import SignupForm
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -27,11 +27,19 @@ def about():
     return render_template("about.html")
 
 
-@app.route("/signup")
+@app.route("/signup", methods=['GET', 'POST'])
 def signup():
     """ Renders the sign up page with form """
     form = SignupForm()
-    return render_template("signup.html", form=form)
+
+    if request.method == 'POST':
+        if form.validate():
+            return 'Success!'
+        else:
+            return render_template("signup.html", form=form)
+
+    elif request.method == 'GET':
+        return render_template("signup.html", form=form)
 
 
 if __name__ == "__main__":
