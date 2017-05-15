@@ -1,6 +1,6 @@
 """ Defines data structures to use to read and write to tables """
 
-from flask.ext.sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from werkzeug import generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
