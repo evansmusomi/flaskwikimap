@@ -18,7 +18,10 @@ app.secret_key = "development-key"
 @app.route("/")
 def index():
     """ Renders home page """
-    return render_template("index.html")
+    if 'email' not in session:
+        return render_template("index.html", login=True)
+    else:
+        return render_template("index.html", home=True)
 
 
 @app.route("/about")
@@ -77,14 +80,21 @@ def home():
             places = p.query(address)
 
             # return results
-            return render_template("home.html", form=form,
-                                   my_coordinates=my_coordinates, places=places)
+            return render_template("home.html",
+                                   form=form,
+                                   my_coordinates=my_coordinates,
+                                   places=places,
+                                   logout=True)
 
         else:
-            return render_template("home.html", form=form)
+            return render_template("home.html", form=form, logout=True)
 
     elif request.method == 'GET':
-        return render_template("home.html", form=form, my_coordinates=my_coordinates, places=places)
+        return render_template("home.html",
+                               form=form,
+                               my_coordinates=my_coordinates,
+                               places=places,
+                               logout=True)
 
 
 @app.route("/login", methods=["GET", "POST"])

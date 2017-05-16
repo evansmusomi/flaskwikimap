@@ -3,7 +3,16 @@
 {% block content %}
     <main class="hero-section">
         <div class="container">
-            <div class="section-tabs"></div>
+            <div class="section-tabs">
+                <div class="places">
+                    {% for place in places %}
+                        <article>
+                            <a href="{{ place['url'] }}" target="_blank" class="name">{{ place['name'] }}</a>
+                            <p class="walking-distance">{{ place['time'] }} min away</p>
+                        </article>
+                    {% endfor %}
+                </div>
+            </div>
 
             <div class="section-map">
                 <div class="nav">

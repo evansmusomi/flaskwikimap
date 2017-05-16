@@ -14,7 +14,20 @@
     <body>
         <header>
             <div class="container">
-                <h1 class="title">Flask Wiki Map<h1>
+                <h1 class="title"><a href="{{ url_for('index') }}">Flask Wiki Map</a></h1>
+                <div class="main-nav">
+                    <ul>
+                        {% if logout %}
+                        <li><a href="{{ url_for('logout') }}">Log Out</a></li>
+                        {% endif %}
+                        {% if login %}
+                        <li><a href="{{ url_for('login') }}">Log In</a></li>
+                        {% endif %}
+                        {% if home %}
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
             </div>
         </header>
         {% block content %}
