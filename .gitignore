@@ -1,3 +1,8 @@
 # Environment
 venv/
 .pylintrc
+.vscode/
+
+# Test Artifacts
+__pycache__/
+.cache/
