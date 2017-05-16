@@ -30,6 +30,10 @@ def about():
 @app.route("/signup", methods=['GET', 'POST'])
 def signup():
     """ Renders the sign up page with form """
+
+    if 'email' in session:
+        return redirect(url_for('home'))
+
     form = SignupForm()
 
     if request.method == 'POST':
@@ -53,12 +57,20 @@ def signup():
 @app.route("/home")
 def home():
     """ Renders the home page """
+
+    if 'email' not in session:
+        return redirect(url_for('login'))
+
     return render_template("home.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """ Renders the log in page """
+
+    if 'email' in session:
+        return redirect(url_for('home'))
+
     form = LoginForm()
 
     if request.method == "POST":
