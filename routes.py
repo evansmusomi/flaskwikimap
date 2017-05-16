@@ -64,7 +64,7 @@ def home():
     form = AddressForm()
 
     places = []
-    my_coordinates = (1.2921, 36.8219)
+    my_coordinates = (-1.2886111111111, 36.823055555556)
 
     if request.method == 'POST':
         if form.validate():
@@ -72,12 +72,13 @@ def home():
             address = form.address.data
 
             # query for places around it
-            place = Place()
-            my_coordinates = place.address_to_latlng(address)
-            places = place.query(address)
+            p = Place()
+            my_coordinates = p.address_to_latlng(address)
+            places = p.query(address)
 
             # return results
-            return render_template("home.html", my_coordinates=my_coordinates, places=places)
+            return render_template("home.html", form=form,
+                                   my_coordinates=my_coordinates, places=places)
 
         else:
             return render_template("home.html", form=form)

@@ -1,8 +1,7 @@
 """ Defines data structures to use to read and write to tables """
 
 import json
-import urllib2
-import geocoder
+import urllib
 
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug import generate_password_hash, check_password_hash
@@ -44,21 +43,30 @@ class Place(object):
 
     def wiki_path(self, slug):
         """ Replace spaces with _ in search urls """
-        return urllib2.urlparse.urljoin("http://en.wikipedia.org/wiki/", slug.replace(' ', '_'))
+        return urllib.parse.urljoin("http://en.wikipedia.org/wiki/", slug.replace(' ', '_'))
 
     def address_to_latlng(self, address):
         """ Converts address into geo-coordinates """
-        g = geocoder.google(address)
-        return (g.lat, g.lng)
+
+        address = urllib.request.quote(address)
+
+        url = 'https://maps.googleapis.com/maps/api/geocode/json?address={}&sensor=false'.format(
+            address)
+        g = urllib.request.urlopen(url)
+        results = g.read()
+        g.close()
+
+        location = json.loads(results)['results'][0]['geometry']['location']
+        return (location['lat'], location['lng'])
 
     def query(self, address):
         """ Gets places of interest near an address """
 
         lat, lng = self.address_to_latlng(address)
 
-        query_url = 'https://en.wikipedia.org/w/api/php?action=query&list=geosearch&radius=5000&gscoord={0}%7C{1}&gslimit=20&format=json'.format(
+        query_url = 'https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=5000&gscoord={0}%7C{1}&gslimit=10&format=json'.format(
             lat, lng)
-        g = urllib2.urlopen(query_url)
+        g = urllib.request.urlopen(query_url)
         results = g.read()
         g.close()
 
