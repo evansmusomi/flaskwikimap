@@ -1,7 +1,7 @@
 """ Maps browser requests to Python functions """
 
-from models import db, User
-from forms import SignupForm, LoginForm
+from models import db, User, Place
+from forms import SignupForm, LoginForm, AddressForm
 from flask import Flask, render_template, request, session, redirect, url_for
 
 app = Flask(__name__)
@@ -54,14 +54,36 @@ def signup():
         return render_template("signup.html", form=form)
 
 
-@app.route("/home")
+@app.route("/home", methods=["GET", "POST"])
 def home():
     """ Renders the home page """
 
     if 'email' not in session:
         return redirect(url_for('login'))
 
-    return render_template("home.html")
+    form = AddressForm()
+
+    places = []
+    my_coordinates = (1.2921, 36.8219)
+
+    if request.method == 'POST':
+        if form.validate():
+            # get the address
+            address = form.address.data
+
+            # query for places around it
+            place = Place()
+            my_coordinates = place.address_to_latlng(address)
+            places = place.query(address)
+
+            # return results
+            return render_template("home.html", my_coordinates=my_coordinates, places=places)
+
+        else:
+            return render_template("home.html", form=form)
+
+    elif request.method == 'GET':
+        return render_template("home.html", form=form, my_coordinates=my_coordinates, places=places)
 
 
 @app.route("/login", methods=["GET", "POST"])
