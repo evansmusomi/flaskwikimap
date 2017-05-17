@@ -42,7 +42,7 @@ class Place(object):
         return int(meters / 80)
 
     def wiki_path(self, slug):
-        """ Replace spaces with _ in search urls """
+        """ Replace spaces with _ to create appropriate wiki links """
         return urllib.parse.urljoin("http://en.wikipedia.org/wiki/", slug.replace(' ', '_'))
 
     def address_to_latlng(self, address):
@@ -52,9 +52,9 @@ class Place(object):
 
         url = 'https://maps.googleapis.com/maps/api/geocode/json?address={}&sensor=false'.format(
             address)
-        g = urllib.request.urlopen(url)
-        results = g.read()
-        g.close()
+        response = urllib.request.urlopen(url)
+        results = response.read()
+        response.close()
 
         location = json.loads(results)['results'][0]['geometry']['location']
         return (location['lat'], location['lng'])
@@ -66,9 +66,9 @@ class Place(object):
 
         query_url = 'https://en.wikipedia.org/w/api.php?action=query&list=geosearch&gsradius=5000&gscoord={0}%7C{1}&gslimit=20&format=json'.format(
             lat, lng)
-        g = urllib.request.urlopen(query_url)
-        results = g.read()
-        g.close()
+        response = urllib.request.urlopen(query_url)
+        results = response.read()
+        response.close()
 
         data = json.loads(results)
 

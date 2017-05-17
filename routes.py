@@ -7,8 +7,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 app = Flask(__name__)
 
 # Connect Flask to database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://localhost/flaskwikimap'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config.from_object('settings.Config')
 db.init_app(app)
 
 # Configure app to protect against CSRF

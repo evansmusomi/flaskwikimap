@@ -2,6 +2,7 @@
 venv/
 .pylintrc
 .vscode/
+.env
 
 # Test Artifacts
 __pycache__/
