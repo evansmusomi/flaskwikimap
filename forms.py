@@ -8,7 +8,7 @@ from wtforms.validators import DataRequired, Email, Length
 class SignupForm(Form):
     """ Defines the sign up form fields """
 
-    first_name = StringField('First name', cvalidators=[
+    first_name = StringField('First name', validators=[
         DataRequired('Please enter your first name')])
 
     last_name = StringField('Last name', validators=[
